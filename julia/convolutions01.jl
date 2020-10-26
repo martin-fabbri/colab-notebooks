@@ -144,32 +144,69 @@ edge_enhanced_horizontal = 3 * Gray.(abs.(convolve(image, edge_detection_kernel_
 # ╔═╡ 16d61752-1746-11eb-305e-81831983418b
 sum(sharpen_kernel)
 
+# ╔═╡ 0dad691e-174b-11eb-0970-4981859d5f82
+md"""
+## Trying Fourier Transforms
+"""
+
 # ╔═╡ 77d0acd4-173c-11eb-28ea-5d1566fbb940
-
-
-# ╔═╡ ea02e700-1745-11eb-3562-1d1fa9d3e075
-
+begin
+	function rgb_to_float(color)
+    	return mean([color.r, color.g, color.b])
+	end
+	
+	function fourier_spectrum_magnitudes(img)
+		grey_values = rgb_to_float.(img)
+		spectrum = fftshift(fft(grey_values))
+		return abs.(spectrum)
+	end
+	
+	function plot_1d_fourier_spectrum(img, dims=1)
+		spectrum = fourier_spectrum_magnitudes(img)
+		plot(centered(mean(spectrum, dims=1)[1:end]))
+	end
+end
 
 # ╔═╡ ea23db4a-1745-11eb-07c4-5ffeafc03183
-
+plot_1d_fourier_spectrum(image)
 
 # ╔═╡ ea460db4-1745-11eb-1af5-1d206f5b617b
+begin
+	herd_zebras_url = "https://i.pinimg.com/originals/3c/66/74/3c6674c2c869cccdd741379fe593294d.jpg"
+	download(herd_zebras_url, "herd_zebras.jpg")
+	large_zebras = load("herd_zebras.jpg")
+	shrink_zebras = shrink_image(large_zebras, 7)
+end
 
+# ╔═╡ 91ab8350-174c-11eb-2d29-01e1ef5116c9
+plot_1d_fourier_spectrum(shrink_zebras)
 
 # ╔═╡ ea635bb2-1745-11eb-2631-d56be9f6e88c
+begin
+	gauss_kernel = Kernel.gaussian((2, 2))
+	conv_image = convolve(shrink_zebras, gauss_kernel) 
+end
 
 
 # ╔═╡ ea80a71c-1745-11eb-3a0d-773e478efcc6
-
+plot_1d_fourier_spectrum(conv_image)
 
 # ╔═╡ ea9dec78-1745-11eb-2473-bbdce2c4c96a
-
+begin
+	function heatmap_2d_fourier_spectrum(img)
+		heatmap(log.(fourier_spectrum_magnitudes(img)))
+	end
+	
+	function heatmap_2d_fourier_spectrum(img)
+		heatmap(log.(fourier_spectrum_magnitudes(img)))
+	end
+end
 
 # ╔═╡ 77eb908a-173c-11eb-1323-8192758a3bf8
-
+heatmap_2d_fourier_spectrum(shrink_zebras)
 
 # ╔═╡ 780650a0-173c-11eb-00db-f7c0ec17cf52
-
+heatmap_2d_fourier_spectrum(conv_image)
 
 # ╔═╡ 78a80050-173c-11eb-2fe8-6b70bb6a2507
 
@@ -198,10 +235,11 @@ sum(sharpen_kernel)
 # ╠═bb0d4492-1748-11eb-05c6-0973e38a9f28
 # ╠═c1823bbe-1745-11eb-10ad-a56948b9eaab
 # ╠═16d61752-1746-11eb-305e-81831983418b
+# ╟─0dad691e-174b-11eb-0970-4981859d5f82
 # ╠═77d0acd4-173c-11eb-28ea-5d1566fbb940
-# ╠═ea02e700-1745-11eb-3562-1d1fa9d3e075
 # ╠═ea23db4a-1745-11eb-07c4-5ffeafc03183
 # ╠═ea460db4-1745-11eb-1af5-1d206f5b617b
+# ╠═91ab8350-174c-11eb-2d29-01e1ef5116c9
 # ╠═ea635bb2-1745-11eb-2631-d56be9f6e88c
 # ╠═ea80a71c-1745-11eb-3a0d-773e478efcc6
 # ╠═ea9dec78-1745-11eb-2473-bbdce2c4c96a
