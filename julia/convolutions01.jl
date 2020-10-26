@@ -13,6 +13,7 @@ begin
 	using DSP
 	using ImageFiltering
 	using PlutoUI
+	using OffsetArrays
 end
 
 # ╔═╡ 41d37ef0-164b-11eb-0940-636023edbe0d
@@ -85,30 +86,75 @@ function convolve(M, kernel, M_index_function=clamp_at_boundary)
 		for j in 1:size(M, 2)
 			# (k, l) loop over the neighbouring pixels
 			new_image[i, j] = sum([
-						@inbounds kernel[k, l]
+						kernel[k, l] * M_index_function(M, i - k, j - l)
 						for k in -half_height:-half_height + height - 1
 						for l in -half_width:-half_width + width - 1
 					])
 		end
 	end
-	new_image
-	
+	return new_image
 end
 	
 	
-
-# ╔═╡ eb820660-16b9-11eb-11e4-21b42906ae4b
-
 
 # ╔═╡ 9650d1b0-16b6-11eb-061b-d94361398d7b
 begin
-	K = gaussian((3,3), 0.25)
-	U = rand(1:100, 6, 6);
+	K = OffsetArray(gaussian((3,3), 0.25), -1:1, -1:1)
+	U = rand(1.0:100.0, 6, 6);
 	convolve(U, K)
 end
 
-# ╔═╡ 464ef8b0-16be-11eb-0ccd-7b2d18d77a0c
-K
+# ╔═╡ 765a986a-173c-11eb-29e6-cb155437d4ea
+convolve(image, Kernel.gaussian((3, 3)))
+
+# ╔═╡ 7767a37e-173c-11eb-39a8-0d1bd7be9077
+convolve(image, Kernel.gaussian((10, 10)))
+
+# ╔═╡ 7785d7e0-173c-11eb-11b4-ebc2a9c3815a
+sharpen_kernel = centered([
+	-0.5 -1.0 -0.5
+	-1.0  7.0 -1.0
+	-0.5 -1.0 -0.5
+])
+
+# ╔═╡ c1823bbe-1745-11eb-10ad-a56948b9eaab
+[image convolve(image, sharpen_kernel)]
+
+# ╔═╡ 16d61752-1746-11eb-305e-81831983418b
+
+
+# ╔═╡ 0b00e716-1746-11eb-316b-b70c9d378a9a
+
+
+# ╔═╡ 77d0acd4-173c-11eb-28ea-5d1566fbb940
+
+
+# ╔═╡ ea02e700-1745-11eb-3562-1d1fa9d3e075
+
+
+# ╔═╡ ea23db4a-1745-11eb-07c4-5ffeafc03183
+
+
+# ╔═╡ ea460db4-1745-11eb-1af5-1d206f5b617b
+
+
+# ╔═╡ ea635bb2-1745-11eb-2631-d56be9f6e88c
+
+
+# ╔═╡ ea80a71c-1745-11eb-3a0d-773e478efcc6
+
+
+# ╔═╡ ea9dec78-1745-11eb-2473-bbdce2c4c96a
+
+
+# ╔═╡ 77eb908a-173c-11eb-1323-8192758a3bf8
+
+
+# ╔═╡ 780650a0-173c-11eb-00db-f7c0ec17cf52
+
+
+# ╔═╡ 78a80050-173c-11eb-2fe8-6b70bb6a2507
+
 
 # ╔═╡ Cell order:
 # ╟─41d37ef0-164b-11eb-0940-636023edbe0d
@@ -121,6 +167,20 @@ K
 # ╠═9c21a2b0-16af-11eb-3fae-6d8927359b72
 # ╠═307c6610-16b6-11eb-159c-f18f672027df
 # ╠═1592aef0-1688-11eb-2d74-35ce0cb1ddc3
-# ╠═eb820660-16b9-11eb-11e4-21b42906ae4b
 # ╠═9650d1b0-16b6-11eb-061b-d94361398d7b
-# ╠═464ef8b0-16be-11eb-0ccd-7b2d18d77a0c
+# ╠═765a986a-173c-11eb-29e6-cb155437d4ea
+# ╠═7767a37e-173c-11eb-39a8-0d1bd7be9077
+# ╠═7785d7e0-173c-11eb-11b4-ebc2a9c3815a
+# ╠═c1823bbe-1745-11eb-10ad-a56948b9eaab
+# ╠═16d61752-1746-11eb-305e-81831983418b
+# ╠═0b00e716-1746-11eb-316b-b70c9d378a9a
+# ╠═77d0acd4-173c-11eb-28ea-5d1566fbb940
+# ╠═ea02e700-1745-11eb-3562-1d1fa9d3e075
+# ╠═ea23db4a-1745-11eb-07c4-5ffeafc03183
+# ╠═ea460db4-1745-11eb-1af5-1d206f5b617b
+# ╠═ea635bb2-1745-11eb-2631-d56be9f6e88c
+# ╠═ea80a71c-1745-11eb-3a0d-773e478efcc6
+# ╠═ea9dec78-1745-11eb-2473-bbdce2c4c96a
+# ╠═77eb908a-173c-11eb-1323-8192758a3bf8
+# ╠═780650a0-173c-11eb-00db-f7c0ec17cf52
+# ╠═78a80050-173c-11eb-2fe8-6b70bb6a2507
