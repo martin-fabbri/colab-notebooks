@@ -94,8 +94,12 @@ md"👉 Make a function `mean` using a `for` loop, which computes the mean/avera
 
 # ╔═╡ 0ffa8354-edee-11ea-2883-9d5bfea4a236
 function mean(x)
-	
-	return missing
+	acc = 0.0
+	n = size(x, 1)
+	for i = 1:n
+		acc += x[i]
+	end
+	return acc / n
 end
 
 # ╔═╡ 1f104ce4-ee0e-11ea-2029-1d9c817175af
@@ -105,15 +109,16 @@ mean([1, 2, 3])
 md"👉 Define `m` to be the mean of `random_vect`."
 
 # ╔═╡ 2a391708-edee-11ea-124e-d14698171b68
-m = missing
+m = mean(random_vect)
 
 # ╔═╡ e2863d4c-edef-11ea-1d67-332ddca03cc4
 md"""👉 Write a function `demean`, which takes a vector `x` and subtracts the mean from each value in `x`."""
 
 # ╔═╡ ec5efe8c-edef-11ea-2c6f-afaaeb5bc50c
 function demean(x)
-	
-	return missing
+	mean_x = mean(x)
+	n = size(x, 1)
+	return [x[i] - mean_x for i=1:n]
 end
 
 # ╔═╡ 29e10640-edf0-11ea-0398-17dbf4242de3
@@ -144,9 +149,18 @@ md"""
 
 # ╔═╡ b6b65b94-edf0-11ea-3686-fbff0ff53d08
 function create_bar()
-	
-	return missing
+	n = 100
+	center = 50
+	radius = 20
+	bar = fill(0, (n))
+	for i=center-radius:center+radius
+		bar[i] = 1
+	end
+	return bar
 end
+
+# ╔═╡ c3acff72-17aa-11eb-26ee-c77c65a35413
+create_bar()
 
 # ╔═╡ 22f28dae-edf2-11ea-25b5-11c369ae1253
 md"""
@@ -1380,6 +1394,7 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╠═38155b5a-edf0-11ea-3e3f-7163da7433fb
 # ╠═73ef1d50-edf0-11ea-343c-d71706874c82
 # ╟─a5f8bafe-edf0-11ea-0da3-3330861ae43a
+# ╠═c3acff72-17aa-11eb-26ee-c77c65a35413
 # ╠═b6b65b94-edf0-11ea-3686-fbff0ff53d08
 # ╟─d862fb16-edf1-11ea-36ec-615d521e6bc0
 # ╟─e3394c8a-edf0-11ea-1bb8-619f7abb6881
