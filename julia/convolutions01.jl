@@ -18,7 +18,7 @@ end
 
 # ╔═╡ 41d37ef0-164b-11eb-0940-636023edbe0d
 md"""
-## A concrete first taste of abstraction
+## Image Convolutions
 """
 
 # ╔═╡ f8db5200-1680-11eb-1d10-cbc2b31fc024
@@ -82,7 +82,7 @@ function convolve(M, kernel, M_index_function=clamp_at_boundary)
 	new_image = similar(M)
 	
 	# (i, j) loop over the original image
-	for i in 1:size(M, 1)
+	@inbounds for i in 1:size(M, 1)
 		for j in 1:size(M, 2)
 			# (k, l) loop over the neighbouring pixels
 			new_image[i, j] = sum([
@@ -117,14 +117,32 @@ sharpen_kernel = centered([
 	-0.5 -1.0 -0.5
 ])
 
+# ╔═╡ cea7f490-1746-11eb-2a66-8f75edaec775
+edge_detection_kernel_horizontal = Kernel.sobel()[1]
+
+# ╔═╡ b9733322-1747-11eb-1da7-3d4b992d60a2
+show_colored_kernel(edge_detection_kernel_horizontal)
+
+# ╔═╡ ed2204f0-1747-11eb-1662-9d8199f940a1
+edge_detection_kernel_vertical = Kernel.sobel()[2]
+
+# ╔═╡ 0018a2bc-1748-11eb-090f-8189d8958e3b
+show_colored_kernel(edge_detection_kernel_vertical)
+
+# ╔═╡ 25644f9e-1748-11eb-1785-b199708755e1
+sum(edge_detection_kernel_vertical)
+
+# ╔═╡ 64f95e42-1748-11eb-1048-7f168caea4b4
+edge_enhanced_vertical = 3 * Gray.(abs.(convolve(image, edge_detection_kernel_vertical)))
+
+# ╔═╡ bb0d4492-1748-11eb-05c6-0973e38a9f28
+edge_enhanced_horizontal = 3 * Gray.(abs.(convolve(image, edge_detection_kernel_horizontal)))
+
 # ╔═╡ c1823bbe-1745-11eb-10ad-a56948b9eaab
-[image convolve(image, sharpen_kernel)]
+[image convolve(image, sharpen_kernel) convolve(convolve(image, sharpen_kernel), edge_detection_kernel_horizontal) convolve(convolve(image, sharpen_kernel), edge_detection_kernel_vertical) edge_enhanced_vertical edge_enhanced_horizontal]
 
 # ╔═╡ 16d61752-1746-11eb-305e-81831983418b
-
-
-# ╔═╡ 0b00e716-1746-11eb-316b-b70c9d378a9a
-
+sum(sharpen_kernel)
 
 # ╔═╡ 77d0acd4-173c-11eb-28ea-5d1566fbb940
 
@@ -171,9 +189,15 @@ sharpen_kernel = centered([
 # ╠═765a986a-173c-11eb-29e6-cb155437d4ea
 # ╠═7767a37e-173c-11eb-39a8-0d1bd7be9077
 # ╠═7785d7e0-173c-11eb-11b4-ebc2a9c3815a
+# ╠═cea7f490-1746-11eb-2a66-8f75edaec775
+# ╠═b9733322-1747-11eb-1da7-3d4b992d60a2
+# ╠═ed2204f0-1747-11eb-1662-9d8199f940a1
+# ╠═0018a2bc-1748-11eb-090f-8189d8958e3b
+# ╠═25644f9e-1748-11eb-1785-b199708755e1
+# ╠═64f95e42-1748-11eb-1048-7f168caea4b4
+# ╠═bb0d4492-1748-11eb-05c6-0973e38a9f28
 # ╠═c1823bbe-1745-11eb-10ad-a56948b9eaab
 # ╠═16d61752-1746-11eb-305e-81831983418b
-# ╠═0b00e716-1746-11eb-316b-b70c9d378a9a
 # ╠═77d0acd4-173c-11eb-28ea-5d1566fbb940
 # ╠═ea02e700-1745-11eb-3562-1d1fa9d3e075
 # ╠═ea23db4a-1745-11eb-07c4-5ffeafc03183
