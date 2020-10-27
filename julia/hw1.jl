@@ -360,19 +360,23 @@ md"""
 
 # ╔═╡ f6e2cb2a-ee07-11ea-06ee-1b77e34c1e91
 begin
+	function myclamp(x)
+		return x < 0.0 ? 0.0 : x > 1.0 ? 1.0 : x 
+	end
+	
 	function noisify(x::Number, s)
-
-		return missing
+		return myclamp(x + s)
 	end
 	
 	function noisify(color::AbstractRGB, s)
 		# you will write me in a later exercise!
-		return missing
+		clamped = myclamp.((color.r + s, color.g + s, color.b + s))
+		return RGB(clamped[1], clamped[2], clamped[3])
 	end
 	
 	function noisify(image::AbstractMatrix, s)
 		# you will write me in a later exercise!
-		return missing
+		return noisify.(image, s)
 	end
 end
 
@@ -390,7 +394,7 @@ _Write the function in the same cell as `noisify(x::Number)` from the last exerc
 noisify(red, color_noise)
 
 # ╔═╡ 6a05f568-ee1b-11ea-3b6c-83b6ada3680f
-
+myclamp.((-1, -3, 0.0, 0.9, 33))
 
 # ╔═╡ f70823d2-ee07-11ea-2bb3-01425212aaf9
 md"""
@@ -1484,7 +1488,7 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╟─f6fc1312-ee07-11ea-39a0-299b67aee3d8
 # ╟─774b4ce6-ee1b-11ea-2b48-e38ee25fc89b
 # ╠═7e4aeb70-ee1b-11ea-100f-1952ba66f80f
-# ╟─6a05f568-ee1b-11ea-3b6c-83b6ada3680f
+# ╠═6a05f568-ee1b-11ea-3b6c-83b6ada3680f
 # ╟─f70823d2-ee07-11ea-2bb3-01425212aaf9
 # ╠═e70a84d4-ee0c-11ea-0640-bf78653ba102
 # ╠═ac15e0d0-ee0c-11ea-1eaf-d7f88b5df1d7
