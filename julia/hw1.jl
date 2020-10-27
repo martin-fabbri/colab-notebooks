@@ -13,6 +13,12 @@ macro bind(def, element)
     end
 end
 
+# ╔═╡ 6b30dc38-ed6b-11ea-10f3-ab3f121bf4b8
+begin
+	Pkg.add("PlutoUI")
+	using PlutoUI
+end
+
 # ╔═╡ 83eb9ca0-ed68-11ea-0bc5-99a09c68f867
 md"_homework 1, version 4_"
 
@@ -50,25 +56,19 @@ Submission by: **_$(student.name)_** ($(student.kerberos_id)@mit.edu)
 md"_Let's create a package environment:_"
 
 # ╔═╡ 65780f00-ed6b-11ea-1ecf-8b35523a7ac0
-begin
-	import Pkg
-	Pkg.activate(mktempdir())
-end
-
-# ╔═╡ 74b008f6-ed6b-11ea-291f-b3791d6d1b35
-begin
-	Pkg.add(["Images", "ImageMagick"])
-	using Images
-end
-
-# ╔═╡ 6b30dc38-ed6b-11ea-10f3-ab3f121bf4b8
-begin
-	Pkg.add("PlutoUI")
-	using PlutoUI
-end
+# begin
+# 	import Pkg
+# 	Pkg.activate(mktempdir())
+# end
 
 # ╔═╡ 67461396-ee0a-11ea-3679-f31d46baa9b4
 md"_We set up Images.jl again:_"
+
+# ╔═╡ 74b008f6-ed6b-11ea-291f-b3791d6d1b35
+# begin
+# 	Pkg.add(["Images", "ImageMagick"])
+# 	using Images
+# end
 
 # ╔═╡ 540ccfcc-ee0a-11ea-15dc-4f8120063397
 md"""
@@ -371,6 +371,7 @@ begin
 	function noisify(color::AbstractRGB, s)
 		# you will write me in a later exercise!
 		clamped = myclamp.((color.r + s, color.g + s, color.b + s))
+		# clamped = noisify.(color, s)
 		return RGB(clamped[1], clamped[2], clamped[3])
 	end
 	
@@ -479,7 +480,7 @@ Let's create a vector `v` of random numbers of length `n=100`.
 """
 
 # ╔═╡ 7fcd6230-ee09-11ea-314f-a542d00d582e
-n = 100
+n = 10
 
 # ╔═╡ 7fdb34dc-ee09-11ea-366b-ffe10d1aa845
 v = rand(n)
@@ -496,7 +497,7 @@ You've seen some colored lines in this notebook to visualize arrays. Can you mak
 """
 
 # ╔═╡ 01070e28-ee0f-11ea-1928-a7919d452bdd
-
+colored_line(v)
 
 # ╔═╡ 7522f81e-ee1c-11ea-35af-a17eb257ff1a
 md"Try changing `n` and `v` around. Notice that you can run the cell `v = rand(n)` again to regenerate new random values."
@@ -511,10 +512,13 @@ A better solution is to use the *closest* value that is inside the vector. Effec
 👉 Write a function `extend(v, i)` that checks whether the position $i$ is inside `1:n`. If so, return the $i$th component of `v`; otherwise, return the nearest end value.
 """
 
+# ╔═╡ 18845b6a-17fd-11eb-1cf3-8db12bc9a140
+ioio = size(v)[1]
+
 # ╔═╡ 802bec56-ee09-11ea-043e-51cf1db02a34
 function extend(v, i)
-	
-	return missing
+	len = size(v, 1)
+	return i < 1 ? v[1] : i > len ? v[len] : v[i]
 end
 
 # ╔═╡ b7f3994c-ee1b-11ea-211a-d144db8eafc2
@@ -551,10 +555,17 @@ md"""
 👉 Write a function `blur_1D(v, l)` that blurs a vector `v` with a window of length `l` by averaging the elements within a window from $-\ell$ to $\ell$. This is called a **box blur**.
 """
 
+# ╔═╡ ad5297c6-1806-11eb-180d-7525cbc29727
+length(v)
+
 # ╔═╡ 807e5662-ee09-11ea-3005-21fdcc36b023
 function blur_1D(v, l)
-	
-	return missing
+	n = length(v)
+	blured = zeros(typeof(v[1]), n)
+	for i=1:n
+		blured[i] = mean([extend(v, j) for j=i-l:i+l])
+	end
+	return blured
 end
 
 # ╔═╡ 808deca8-ee09-11ea-0ee3-1586fa1ce282
@@ -573,6 +584,9 @@ let
 	end
 end
 
+# ╔═╡ d7026b34-1807-11eb-1172-5f73e24f4ba7
+blur_1D(v, 2)
+
 # ╔═╡ 809f5330-ee09-11ea-0e5b-415044b6ac1f
 md"""
 #### Exercise 3.4
@@ -580,7 +594,9 @@ md"""
 """
 
 # ╔═╡ ca1ac5f4-ee1c-11ea-3d00-ff5268866f87
-
+[   colored_line(v);
+	colored_line(blur_1D(v, 5))
+]
 
 # ╔═╡ 80ab64f4-ee09-11ea-29b4-498112ed0799
 md"""
@@ -597,9 +613,27 @@ Again, we need to take care about what happens if $v_{i -n }$ falls off the end 
 """
 
 # ╔═╡ 28e20950-ee0c-11ea-0e0a-b5f2e570b56e
-function convolve_vector(v, k)
-	
-	return missing
+begin
+	function clamp_at_boundary(M, i, j)
+		return M[
+			clamp(i, 1, size(M, 1)),
+			clamp(j, 1, size(M, 2)),
+		]
+	end
+
+	function convolve_vector(v, k)
+		new_v = deepcopy(v)
+		l = (length(k) - 1) ÷ 2
+		_sum = 0
+		for i = 1:length(v)
+			for (idx,j) in enumerate((-l + i):1:(l + i))
+				_sum = _sum + (extend(v,j)) * (k[idx])
+			end
+			new_v[i] = _sum
+			_sum = 0
+		end
+		return new_v
+	end
 end
 
 # ╔═╡ 93284f92-ee12-11ea-0342-833b1a30625c
@@ -630,10 +664,17 @@ and then **normalize** so that the sum of the resulting kernel is 1.
 For simplicity you can take $\sigma=1$.
 """
 
+# ╔═╡ 43294a92-180e-11eb-3dc8-31ebb1377d56
+[-3:3]
+
 # ╔═╡ 1c8b4658-ee0c-11ea-2ede-9b9ed7d3125e
-function gaussian_kernel(n)
-	
-	return missing
+function gaussian_kernel(n, σ = 1)
+	mid=(n*n)÷2
+	g_x(x) = 1 / √(2π * σ^2) * exp(-x^2 / (2σ^2))
+	#_kernel = [g_x(i) for i=-n:n]
+	_kernel = g_x.(-mid:mid)
+	_kernel = _kernel ./ sum(_kernel)
+	return centered(reshape(_kernel, n, n))
 end
 
 # ╔═╡ f8bd22b8-ee14-11ea-04aa-ab16fd01826e
@@ -667,6 +708,12 @@ end
 
 # ╔═╡ bc1c20a4-ee14-11ea-3525-63c9fa78f089
 colored_line(test_gauss_1D_b)
+
+# ╔═╡ ae3dfdfc-1819-11eb-2890-456da3029768
+gaussian_kernel(gaussian_kernel_size_1D)
+
+# ╔═╡ c35d15ba-1819-11eb-0995-4f8f9b544731
+create_bar()
 
 # ╔═╡ b01858b6-edf3-11ea-0826-938d33c19a43
 md"""
@@ -727,10 +774,36 @@ md"""
 👉 Implement a function `convolve_image(M, K)`. 
 """
 
+# ╔═╡ f83ef41e-181a-11eb-30ae-87f35cf2203b
+function clamp_at_boundary_ext(M, i, j)
+	return M[
+		clamp(i, 1, size(M, 1)),
+		clamp(j, 1, size(M, 2)),
+	]
+end
+
 # ╔═╡ 8b96e0bc-ee15-11ea-11cd-cfecea7075a0
-function convolve_image(M::AbstractMatrix, K::AbstractMatrix)
+function convolve_image(M, kernel, M_index_function=clamp_at_boundary_ext)
+	height = size(kernel, 1)
+	width = size(kernel, 2)
 	
-	return missing
+	half_height = height ÷ 2
+	half_width = width ÷ 2
+	
+	new_image = similar(M)
+	
+	# (i, j) loop over the original image
+	@inbounds for i in 1:size(M, 1)
+		for j in 1:size(M, 2)
+			# (k, l) loop over the neighbouring pixels
+			new_image[i, j] = sum([
+						kernel[k, l] * M_index_function(M, i - k, j - l)
+						for k in -half_height:-half_height + height - 1
+						for l in -half_width:-half_width + width - 1
+					])
+		end
+	end
+	return new_image
 end
 
 # ╔═╡ 5a5135c6-ee1e-11ea-05dc-eb0c683c2ce5
@@ -1508,6 +1581,7 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╠═01070e28-ee0f-11ea-1928-a7919d452bdd
 # ╟─7522f81e-ee1c-11ea-35af-a17eb257ff1a
 # ╟─801d90c0-ee09-11ea-28d6-61b806de26dc
+# ╠═18845b6a-17fd-11eb-1cf3-8db12bc9a140
 # ╠═802bec56-ee09-11ea-043e-51cf1db02a34
 # ╟─b7f3994c-ee1b-11ea-211a-d144db8eafc2
 # ╠═803905b2-ee09-11ea-2d52-e77ff79693b0
@@ -1519,8 +1593,10 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╟─45c4da9a-ee0f-11ea-2c5b-1f6704559137
 # ╟─bcf98dfc-ee1b-11ea-21d0-c14439500971
 # ╟─80664e8c-ee09-11ea-0702-711bce271315
+# ╠═ad5297c6-1806-11eb-180d-7525cbc29727
 # ╠═807e5662-ee09-11ea-3005-21fdcc36b023
 # ╟─808deca8-ee09-11ea-0ee3-1586fa1ce282
+# ╠═d7026b34-1807-11eb-1172-5f73e24f4ba7
 # ╟─809f5330-ee09-11ea-0e5b-415044b6ac1f
 # ╠═ca1ac5f4-ee1c-11ea-3d00-ff5268866f87
 # ╟─ea435e58-ee11-11ea-3785-01af8dd72360
@@ -1532,6 +1608,7 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╟─cf73f9f8-ee12-11ea-39ae-0107e9107ef5
 # ╟─7ffd14f8-ee1d-11ea-0343-b54fb0333aea
 # ╟─80b7566a-ee09-11ea-3939-6fab470f9ec8
+# ╠═43294a92-180e-11eb-3dc8-31ebb1377d56
 # ╠═1c8b4658-ee0c-11ea-2ede-9b9ed7d3125e
 # ╟─f8bd22b8-ee14-11ea-04aa-ab16fd01826e
 # ╠═2a9dd06a-ee13-11ea-3f84-67bb309c77a8
@@ -1539,6 +1616,8 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╠═38eb92f6-ee13-11ea-14d7-a503ac04302e
 # ╟─bc1c20a4-ee14-11ea-3525-63c9fa78f089
 # ╠═24c21c7c-ee14-11ea-1512-677980db1288
+# ╠═ae3dfdfc-1819-11eb-2890-456da3029768
+# ╠═c35d15ba-1819-11eb-0995-4f8f9b544731
 # ╟─27847dc4-ee0a-11ea-0651-ebbbb3cfd58c
 # ╠═b01858b6-edf3-11ea-0826-938d33c19a43
 # ╟─7c1bc062-ee15-11ea-30b1-1b1e76520f13
@@ -1553,6 +1632,7 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╟─efd1ceb4-ee1c-11ea-350e-f7e3ea059024
 # ╟─3cd535e4-ee26-11ea-2482-fb4ad43dda19
 # ╟─7c41f0ca-ee15-11ea-05fb-d97a836659af
+# ╠═f83ef41e-181a-11eb-30ae-87f35cf2203b
 # ╠═8b96e0bc-ee15-11ea-11cd-cfecea7075a0
 # ╟─0cabed84-ee1e-11ea-11c1-7d8a4b4ad1af
 # ╟─5a5135c6-ee1e-11ea-05dc-eb0c683c2ce5
