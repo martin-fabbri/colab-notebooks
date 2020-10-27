@@ -271,11 +271,13 @@ md"""
 👉 Look up the documentation on the `floor` function. Use it to write a function `quantize(x::Number)` that takes in a value $x$ (which you can assume is between 0 and 1) and "quantizes" it into bins of width 0.1. For example, check that 0.267 gets mapped to 0.2.
 """
 
+# ╔═╡ 0968c682-17e6-11eb-3901-8b038f99c960
+floor(0.267, digits=1)
+
 # ╔═╡ f6991a50-ee07-11ea-0bc4-1d68eb028e6a
 begin
 	function quantize(x::Number)
-		
-		return missing
+		return floor(x, digits=1)
 	end
 	
 	function quantize(color::AbstractRGB)
@@ -321,10 +323,15 @@ md"""
 👉 Write a function `invert` that inverts a color, i.e. sends $(r, g, b)$ to $(1 - r, 1-g, 1-b)$.
 """
 
+# ╔═╡ fccf12d6-17f0-11eb-1202-599e2e0fcd10
+begin 
+	double(x) = 2 * x
+	double.([1, 2, 3])
+end
+
 # ╔═╡ 63e8d636-ee0b-11ea-173d-bd3327347d55
-function invert(color::AbstractRGB)
-	
-	return missing
+function invert(color::AbstractRGB) 
+	return RGB(1 - color.r, 1 - color.g, 1 - color.b)
 end
 
 # ╔═╡ 2cc2f84e-ee0d-11ea-373b-e7ad3204bb00
@@ -344,9 +351,6 @@ invert(red)
 
 # ╔═╡ 846b1330-ee0b-11ea-3579-7d90fafd7290
 md"Can you invert the picture of Philip?"
-
-# ╔═╡ 943103e2-ee0b-11ea-33aa-75a8a1529931
-philip_inverted = missing
 
 # ╔═╡ f6d6c71a-ee07-11ea-2b63-d759af80707b
 md"""
@@ -431,6 +435,15 @@ mean_colors(philip)
 
 # ╔═╡ 9751586e-ee0c-11ea-0cbb-b7eda92977c9
 quantize(philip)
+
+# ╔═╡ a24f3492-17f2-11eb-38b2-6b868329d772
+typeof(philip)
+
+# ╔═╡ 943103e2-ee0b-11ea-33aa-75a8a1529931
+philip_inverted = invert.(philip)
+
+# ╔═╡ ae415e0e-17f2-11eb-19cf-b1abe2287cb2
+typeof(philip_inverted)
 
 # ╔═╡ ac15e0d0-ee0c-11ea-1eaf-d7f88b5df1d7
 noisify(philip, philip_noise)
@@ -1445,6 +1458,7 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╠═5be9b144-ee0d-11ea-2a8d-8775de265a1d
 # ╠═4d0158d0-ee0d-11ea-17c3-c169d4284acb
 # ╟─f68d4a36-ee07-11ea-0832-0360530f102e
+# ╠═0968c682-17e6-11eb-3901-8b038f99c960
 # ╠═f6991a50-ee07-11ea-0bc4-1d68eb028e6a
 # ╠═f6a655f8-ee07-11ea-13b6-43ca404ddfc7
 # ╟─c905b73e-ee1a-11ea-2e36-23b8e73bfdb6
@@ -1453,6 +1467,7 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╟─25dad7ce-ee0b-11ea-3e20-5f3019dd7fa3
 # ╠═9751586e-ee0c-11ea-0cbb-b7eda92977c9
 # ╟─f6cc03a0-ee07-11ea-17d8-013991514d42
+# ╠═fccf12d6-17f0-11eb-1202-599e2e0fcd10
 # ╠═63e8d636-ee0b-11ea-173d-bd3327347d55
 # ╟─2cc2f84e-ee0d-11ea-373b-e7ad3204bb00
 # ╟─b8f26960-ee0a-11ea-05b9-3f4bc1099050
@@ -1460,7 +1475,9 @@ with_sobel_edge_detect(sobel_camera_image)
 # ╠═4e21e0c4-ee0b-11ea-3d65-b311ae3f98e9
 # ╠═6dbf67ce-ee0b-11ea-3b71-abc05a64dc43
 # ╟─846b1330-ee0b-11ea-3579-7d90fafd7290
+# ╠═a24f3492-17f2-11eb-38b2-6b868329d772
 # ╠═943103e2-ee0b-11ea-33aa-75a8a1529931
+# ╠═ae415e0e-17f2-11eb-19cf-b1abe2287cb2
 # ╟─f6d6c71a-ee07-11ea-2b63-d759af80707b
 # ╠═f6e2cb2a-ee07-11ea-06ee-1b77e34c1e91
 # ╟─f6ef2c2e-ee07-11ea-13a8-2512e7d94426
