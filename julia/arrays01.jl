@@ -70,6 +70,69 @@ z .= 9
 v
 
 # ╔═╡ e85d9e00-19b0-11eb-3925-99918cddcbd4
+typeof(w), typeof(z)
+
+# ╔═╡ 62c234a2-19b2-11eb-357e-51f15ad594f7
+md"""
+## Nicer syntax for views
+"""
+
+# ╔═╡ 61d29104-19b2-11eb-02fe-4bac18bb7c78
+z2 = @view v[3:5]
+
+# ╔═╡ 3b7d1600-19b2-11eb-1fcc-af0792b5f3ea
+typeof(z2)
+
+# ╔═╡ 3b9a61c4-19b2-11eb-01b3-a3d54b983b27
+z2 .= 1888
+
+# ╔═╡ 3bdb17fc-19b2-11eb-0611-9db04a1299a0
+v
+
+# ╔═╡ 3bf85cc0-19b2-11eb-3a6b-15570698ac18
+md"""
+## Matrices: slices and views
+"""
+
+# ╔═╡ 3c11fa04-19b2-11eb-0065-91f886ef2445
+M = [10i + j for i in 0:4, j in 1:4]
+
+# ╔═╡ 3c2a697c-19b2-11eb-31fd-3d8d978ac8ab
+M2 = [10i + j for i in 0:4 for j in 1:4]
+
+# ╔═╡ 3c467bda-19b2-11eb-3900-1f7a1c9c723d
+M[3:4, 1:2]
+
+# ╔═╡ 3c63cbd6-19b2-11eb-3b2c-c72cf3fd8d2f
+view(M, 3:5, 1:2)
+
+# ╔═╡ 3c7753b8-19b2-11eb-200d-7b7b2c0358c7
+@view M[3:4, 1:2]
+
+# ╔═╡ 3c90fe26-19b2-11eb-2f44-256156778b3e
+md"""
+## Reshaping matrices
+"""
+
+# ╔═╡ 5385781c-19b4-11eb-1c42-c312f8e12946
+M4 = reshape(M, 2, 10)
+
+# ╔═╡ 53a3df6e-19b4-11eb-1de1-632c4c6d90a3
+vv = vec(M)
+
+# ╔═╡ 53bf61d0-19b4-11eb-2212-d91065dae28f
+
+
+# ╔═╡ 53d99a46-19b4-11eb-21fa-859486e6289b
+
+
+# ╔═╡ 53f647ea-19b4-11eb-2356-755781371a3a
+
+
+# ╔═╡ 5413928c-19b4-11eb-1890-230a8077f4ae
+
+
+# ╔═╡ 542f1244-19b4-11eb-207c-131b5699ad24
 
 
 # ╔═╡ Cell order:
@@ -95,3 +158,22 @@ v
 # ╠═e8c15eea-19b0-11eb-018e-eda8a769bebb
 # ╠═e87f1062-19b0-11eb-3a5e-d764456e1a0e
 # ╠═e85d9e00-19b0-11eb-3925-99918cddcbd4
+# ╟─62c234a2-19b2-11eb-357e-51f15ad594f7
+# ╠═61d29104-19b2-11eb-02fe-4bac18bb7c78
+# ╠═3b7d1600-19b2-11eb-1fcc-af0792b5f3ea
+# ╠═3b9a61c4-19b2-11eb-01b3-a3d54b983b27
+# ╠═3bdb17fc-19b2-11eb-0611-9db04a1299a0
+# ╟─3bf85cc0-19b2-11eb-3a6b-15570698ac18
+# ╠═3c11fa04-19b2-11eb-0065-91f886ef2445
+# ╠═3c2a697c-19b2-11eb-31fd-3d8d978ac8ab
+# ╠═3c467bda-19b2-11eb-3900-1f7a1c9c723d
+# ╠═3c63cbd6-19b2-11eb-3b2c-c72cf3fd8d2f
+# ╠═3c7753b8-19b2-11eb-200d-7b7b2c0358c7
+# ╟─3c90fe26-19b2-11eb-2f44-256156778b3e
+# ╠═5385781c-19b4-11eb-1c42-c312f8e12946
+# ╠═53a3df6e-19b4-11eb-1de1-632c4c6d90a3
+# ╠═53bf61d0-19b4-11eb-2212-d91065dae28f
+# ╠═53d99a46-19b4-11eb-21fa-859486e6289b
+# ╠═53f647ea-19b4-11eb-2356-755781371a3a
+# ╠═5413928c-19b4-11eb-1890-230a8077f4ae
+# ╠═542f1244-19b4-11eb-207c-131b5699ad24
