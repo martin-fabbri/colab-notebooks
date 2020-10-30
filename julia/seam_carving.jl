@@ -206,7 +206,15 @@ begin
 end
 
 # ╔═╡ ac652cc4-1a4b-11eb-2fee-dd2887e80796
+md"""
+## Seam carving idea
 
+The idea of seam carving is to find the path from the top of the image to the bottom of the imaga where the path minimized the edgness.
+
+In other words, this path minimized the number of edges it crosses.
+
+
+"""
 
 # ╔═╡ ac48d830-1a4b-11eb-3296-4d12c4153138
 
