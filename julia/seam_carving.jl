@@ -35,18 +35,19 @@ md"""
 ## Utility functions
 """
 
-# ╔═╡ f24dd84a-1a4f-11eb-3982-914e069e07ac
-for i=1:3, j=10:10:20
-	println(i * j)
+# ╔═╡ 988f2d30-1a50-11eb-0a3d-a15827ed7248
+function hbox(x, y, gap=16; sy=size(y), sx=size(x))
+	w,h = (max(sx[1], sy[1]),
+		   gap + sx[2] + sy[2])
+	
+	slate = fill(RGB(1,1,1), w,h)
+	slate[1:size(x,1), 1:size(x,2)] .= RGB.(x)
+	slate[1:size(y,1), size(x,2) + gap .+ (1:size(y,2))] .= RGB.(y)
+	slate
 end
 
-# ╔═╡ 802206dc-1a50-11eb-29b8-b76419d35232
-[i*j for i=1:3, j=10:10:20]
-
-# ╔═╡ 988f2d30-1a50-11eb-0a3d-a15827ed7248
-[i*j 
-	for i=1:3
-	for j=10:10:20]
+# ╔═╡ 14fc8df0-1a64-11eb-13af-cdd3cfc72f2e
+vbox(x,y, gap=16) = hbox(x', y')'
 
 # ╔═╡ d5fa6566-1a4f-11eb-0528-a35576836b80
 function shrink_image(image, ratio=5)
@@ -128,6 +129,15 @@ img = load(download(image_url))
 # arbitrarily choose the brightness of a pixel as a mean of rgb
 brightness(c::AbstractRGB) = 0.5 * c.r + 0.59 * c.g + 0.11 * c.b
 
+# ╔═╡ 65932dac-1a67-11eb-2b1d-a74cd795c111
+function edgeness(img)
+	Sy, Sx = Kernel.sobel()
+	b = brightness.(img)
+	∇y = convolve(b, Sy)
+	∇x = convolve(b, Sx)
+	sqrt.(∇x.^2 + ∇y.^2)
+end
+
 # ╔═╡ 5413928c-19b4-11eb-1890-230a8077f4ae
 Gray.(img)
 
@@ -136,6 +146,9 @@ Gray.(brightness.(img))
 
 # ╔═╡ ec7a7c5e-1a52-11eb-0b3f-49a1c0c2ab4b
 shrink_image(img)
+
+# ╔═╡ 2b5e3d8c-1a64-11eb-3a64-cb4e1c314db2
+show_colored_array(brightness.(img))
 
 # ╔═╡ ad7c6f50-1a4b-11eb-35fe-a7331d599b45
 md"""
@@ -169,32 +182,28 @@ $$G_\text{total} = \sqrt{G_x^2 + G_y^2}.$$
 # ╔═╡ ad6289f0-1a4b-11eb-1c1e-b1158e269574
 Sy, Sx = Kernel.sobel();
 
-# ╔═╡ 2e89e7be-1a4f-11eb-0541-fb091065bbcf
-
-
 # ╔═╡ ad4684c6-1a4b-11eb-3c63-5f888a1d834b
-show_colored_array(Sx)
+[show_colored_array(Sx) show_colored_array(Sy)]
 
 # ╔═╡ ad2c6d34-1a4b-11eb-3f16-7332941d79fa
-
+begin
+	img_brightness = brightness.(img)
+	∇x = convolve(img_brightness, Sx)
+	∇y = convolve(img_brightness, Sy)
+	hbox(show_colored_array(∇x), show_colored_array(∇y))
+end
 
 # ╔═╡ ad0d9044-1a4b-11eb-1a23-b7160b7793ed
-
-
-# ╔═╡ acf14cb8-1a4b-11eb-1f66-d173124c5a0a
-
-
-# ╔═╡ acd67b54-1a4b-11eb-3d40-dd87e2c705fb
-
-
-# ╔═╡ acb9ef70-1a4b-11eb-08da-dbb2c9206f25
-
-
-# ╔═╡ ac9d8eca-1a4b-11eb-0988-9f32ff40644f
-
+vbox(
+	hbox(img[200:end, 50:250], img[200:end, 50:250]), 
+	hbox(show_colored_array.((∇x[200:end, 50:250], ∇y[200:end, 50:250]))...)
+)
 
 # ╔═╡ ac812a78-1a4b-11eb-216d-91a51c6b4742
-
+begin
+	edged = edgeness(img)
+	hbox(img, Gray.(edged) / maximum(abs.(edged)))
+end
 
 # ╔═╡ ac652cc4-1a4b-11eb-2fee-dd2887e80796
 
@@ -218,29 +227,25 @@ show_colored_array(Sx)
 # ╠═d2bf60aa-1a49-11eb-3706-5f7507fc511c
 # ╟─b2a8e540-19af-11eb-0214-9d5f04ac2486
 # ╟─455ad8f4-1a4f-11eb-38aa-b9da92a25c17
-# ╠═f24dd84a-1a4f-11eb-3982-914e069e07ac
-# ╠═802206dc-1a50-11eb-29b8-b76419d35232
-# ╠═988f2d30-1a50-11eb-0a3d-a15827ed7248
-# ╠═d5fa6566-1a4f-11eb-0528-a35576836b80
-# ╠═ba4af658-1a4f-11eb-217a-7f9165d30dbd
-# ╠═571690f6-1a4f-11eb-2cb7-8d75d2dfc5eb
+# ╟─988f2d30-1a50-11eb-0a3d-a15827ed7248
+# ╟─14fc8df0-1a64-11eb-13af-cdd3cfc72f2e
+# ╟─d5fa6566-1a4f-11eb-0528-a35576836b80
+# ╟─ba4af658-1a4f-11eb-217a-7f9165d30dbd
+# ╟─571690f6-1a4f-11eb-2cb7-8d75d2dfc5eb
+# ╟─65932dac-1a67-11eb-2b1d-a74cd795c111
 # ╟─53bf61d0-19b4-11eb-2212-d91065dae28f
 # ╠═53d99a46-19b4-11eb-21fa-859486e6289b
 # ╠═53f647ea-19b4-11eb-2356-755781371a3a
 # ╠═5413928c-19b4-11eb-1890-230a8077f4ae
 # ╠═542f1244-19b4-11eb-207c-131b5699ad24
 # ╠═ec7a7c5e-1a52-11eb-0b3f-49a1c0c2ab4b
+# ╠═2b5e3d8c-1a64-11eb-3a64-cb4e1c314db2
 # ╟─ad7c6f50-1a4b-11eb-35fe-a7331d599b45
 # ╠═ad6289f0-1a4b-11eb-1c1e-b1158e269574
-# ╠═2e89e7be-1a4f-11eb-0541-fb091065bbcf
 # ╠═ad4684c6-1a4b-11eb-3c63-5f888a1d834b
-# ╠═ad2c6d34-1a4b-11eb-3f16-7332941d79fa
-# ╠═ad0d9044-1a4b-11eb-1a23-b7160b7793ed
-# ╠═acf14cb8-1a4b-11eb-1f66-d173124c5a0a
-# ╠═acd67b54-1a4b-11eb-3d40-dd87e2c705fb
-# ╠═acb9ef70-1a4b-11eb-08da-dbb2c9206f25
-# ╠═ac9d8eca-1a4b-11eb-0988-9f32ff40644f
-# ╠═ac812a78-1a4b-11eb-216d-91a51c6b4742
+# ╟─ad2c6d34-1a4b-11eb-3f16-7332941d79fa
+# ╟─ad0d9044-1a4b-11eb-1a23-b7160b7793ed
+# ╟─ac812a78-1a4b-11eb-216d-91a51c6b4742
 # ╠═ac652cc4-1a4b-11eb-2fee-dd2887e80796
 # ╠═ac48d830-1a4b-11eb-3296-4d12c4153138
 # ╠═ac28a5f6-1a4b-11eb-16e8-e18a949846cb

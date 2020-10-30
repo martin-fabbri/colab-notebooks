@@ -419,13 +419,13 @@ hbox(img, marked_carved[n], sy=size(img))
 vbox(x,y, gap=16) = hbox(x', y')'
 
 # ╔═╡ ddac52ea-f148-11ea-2860-21cff4c867e6
-let
-	∇y = convolve(brightness.(img), Sy)
-	∇x = convolve(brightness.(img), Sx)
+begin
+	# ∇y1 = convolve(brightness.(img), Sy)
+	# ∇x1 = convolve(brightness.(img), Sx)
 	# zoom in on the clock
 	vbox(
 		hbox(img[300:end, 1:300], img[300:end, 1:300]), 
-	 	hbox(show_colored_array.((∇x[300:end,  1:300], ∇y[300:end, 1:300]))...)
+		hbox(show_colored_array.((∇x[300:end,  1:300], ∇y[300:end, 1:300]))...)
 	)
 end
 
@@ -451,7 +451,7 @@ end
 # ╟─ac8d6902-f069-11ea-0f1d-9b0fa706d769
 # ╠═ddac52ea-f148-11ea-2860-21cff4c867e6
 # ╠═6f7bd064-eff4-11ea-0260-f71aa7f4f0e5
-# ╟─d6a268c0-eff4-11ea-2c9e-bfef19c7f540
+# ╠═d6a268c0-eff4-11ea-2c9e-bfef19c7f540
 # ╠═172c7612-efee-11ea-077a-5d5c6e2505a4
 # ╠═fcf46120-efec-11ea-06b9-45f470899cb2
 # ╠═dec62538-efee-11ea-1e03-0b801e61e91c
@@ -480,6 +480,6 @@ end
 # ╠═7038abe4-ef36-11ea-11a5-75e57ab51032
 # ╟─2d6c6820-ef2d-11ea-1704-49bb5188cfcc
 # ╠═fa6a2152-ef0f-11ea-0e67-0d1a6599e779
-# ╟─71b16dbe-f08b-11ea-2343-5f1583074029
-# ╟─1fd26a60-f089-11ea-1f56-bb6eba7d9651
+# ╠═71b16dbe-f08b-11ea-2343-5f1583074029
+# ╠═1fd26a60-f089-11ea-1f56-bb6eba7d9651
 # ╟─15d1e5dc-ef2f-11ea-093a-417108bcd495
