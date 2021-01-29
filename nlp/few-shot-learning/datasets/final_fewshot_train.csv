@@ -1,0 +1,105 @@
+,text,class
+34,[ALLUXIO-2743] Fix failing unit tests,1
+2935,#2 Refactored structure of Argument,3
+84,Remove some features from JwtTokenStore,4
+42,Remove duplicated 1.613 section from changelog,2
+2948,* webapp structure refactoring,3
+54,reordered the features so its easier to read,4
+48,Improved performance by clearing the map instead of recreating it.,5
+2937,#26 refactoring package structure for requests and results,3
+24,CORE-2985 MSSQL Snapshot performance improvements,5
+77,Made it possible to select a peptide by clicking in the sequence coverage panel. Moved some spectrum options from the file menu to the annotation menu. Added an export spectrum as mgf option to the annotation menu. Fixed a bug in the maximize frame if closing feature. Fixed a bug in the PTM tab related to the hiding of the score columns.,4
+89,Fail the build on duplicate resources or classes on the classpath,2
+222,Adds validation of code smells in case expressions. Closes #259,2
+109,BZ-1171859 - History data cleanup feature for process / human task,4
+15,"new UI - template page, ISO page - fix a bug that middle menu item doesn't get updated after right panel is updated.",1
+1,Add notes for coptic bug fix and scalar performance improvement,5
+113,"Added tags and lines attributes to @Feature, making it possible to run a single scenario (or just some)",4
+2942,#POULPE-6 1) Structure of component classes was improved 2) Merge branch,3
+5,[SMALLFIX] Fix the duplicated properties as alias property keys are also added to Default Keys,2
+72,stability monitors are inheritable - thus don't use Listener.Iheritance feature + always remove listener when stability monitor is registered,4
+3,"add logic to handle all 2xx response code, bug fix for string response,",1
+2944,"* Introducing basic Service/Data Transfer Object(DTO)/Data Access Object (DAO) shell classes for Loans.  More refactoring and unit tests are still needed, but this lays out some of the basic structure that we want to move towards.",3
+52,updated to new grouping features,4
+2947,"* reverted earlier design change that allow to use regular expressions to directly match source locations. Although handy, this introduces complications with function overloading that I would not want to write documentation about...",3
+276,WFLY-6069 remove duplicate jipijapa module in modules/system/layers/base/org/hibernate/4.3,2
+31,instance page - fix a bug that instance groups didn't show when login as a user.,1
+57,Added support for an update on load feature for plugins. Thanks Raphfrk!,4
+90,Config Import and Jetty stuff added to New Feature,4
+6,Improved performance on management of collections,5
+32,Issue #5812 read cache #openFile performance was improved by pre-check that file is already opened.,5
+39,related UI change after API Bug (#7498) is fixed.,1
+45,Remove duplicate scripts and move the remaining items to the systemvm project,2
+2949,** Refactored workspace material structure to support materials embedded,3
+14,no need now to get version from parent and best not to for feature branches,4
+28,SONAR-1760: Improve performance of NoSonarFilterLoader,5
+20,"NPE in the payload was causing the ssvm agent to not, fix it and also make sure that template/volume sync are robust that exceptions do not cause ssvm agent disconnect issues.",1
+7,Add AppSales to featured list,4
+51,performance improvement based on the input from http://www.nabble.com/Maven-job-5-times-slower-than-a-free-style-job--td14651245.html,5
+107,Improve autosave and backup feature (#2194),4
+16,"bug 7612: fixed a bug where if start when through all retries, we throw an exception",1
+0,MAHOUT-1045: committing patch with changes to unit tests. CDbw numbers still need user testing but ClusterEvaluater results are improved. All tests run,5
+35,CLOUDSTACK-7199: Fixed test_multiple_ips_per_nic.py test failures,1
+11,[Automation] - Fix test failure for test_02_revert_vm_snapshots in smoke/test_vm_snapshots.py,1
+85,"Capture high-level memory allocation
+
+Thread allocated bytes on each trace, and heap histogram for global view.
+
+Better JVM feature detection, and page to display this.",4
+2943,* Improved the whole structure and prepare for first release,3
+49,"improved serialize performance, asm direct mode",5
+40,CLOUDSTACK-7754: Templates source_template_id is null when it is created from Snapshot with its corresponding volume removed. Fix it by searching for volumes including removed. Also bring the logic of setting source template id to create() method than execute which was wrongly put in.,1
+38,"CLOUDSTACK-5557: UI > Network > Guest Network > IP Address > fix a bug that SourceNAT IP, VPC tier IP wrongly showed Configuration tab(firewall/portforwarding/loadbalancing).",1
+2945,"* refactored implementation and design of Sets and Relations. A RelationType is now a subclass of SetType and IRelation is an extended ISet. This makes it possible to factor out common code, and to make the client of the API oblivious to whether something is a relation. Also, I could now implement (type-safely) an implicit normalization of all sets of tuples to relations. This means that at run-time the implementation guarantees there are no sets of tuples, only relations. All and all another it also results in a reduction of code.",3
+37,Support some missing JAPIC features,4
+2934,#143 Package Structure Refactoring,3
+2938,#3 Improved structure of tests,3
+2932,#101403760 Make experiment page use React anatomogram - Refactor `Anatomogram` to its own React component ; refactor `internal-atlas-index.js` to mirror the structure of `index.js` ; simplify the logic to build the heatmap,3
+2941,"#98 added accepting infrastructure for ZIP jobs, including validation of ZIP structure and extraction of properties",3
+2940,"#935 - Refactor cache settings for structured content.   StructuredContent items should be cached in a DTO structure and not utilize standard hibernate query cache.   This is because the BLOB fields that are sometimes returned need to be parsed to correct image and other urls.    We want to cache the parsed result not the DB version.     Also, caching at the hibernate layer caused issues that were addressed as part of BroadleafCommerce/QA#367",3
+9,suffice to pick up remoting as a transitive dependency through core. This fixes the problem reported at http://www.nabble.com/Build-1.93---NoClassDefFoundError-on-Maven-2-Build-tf3483998.html,1
+25,Further improve tag testing.,5
+19,Catch all exceptions when change engine and row_format - can fail when table is full. Just skip as its not a critical fix,1
+205,Remove duplicate Utils getters,2
+30,HADOOP-2519 Performance improvements: Customized RPC serialization,5
+17,Creating feature branch for Cost based optimizer work,4
+8,Improve performance of NewViolationsDecorator,5
+26,HBASE-1183 New MR splitting algorithm and other new features need a way to split a key range in N chunks,4
+22,Fix failing tests - remove old duplicate saved_caches_directory entry leaving zznate's fix for relative location under tmp directory.,2
+23,Improved mmap management when the buffer pool is full. Now performance with millions of writes and random searches are really good. Further work on this in the next days.,5
+2946,* Refactoring structure in to modules (mostly to speed up incremental builds),3
+2951,- Introduced the Thunk structure for the intermediate representation.,3
+96,"HIVE-17540: remove feature: describe pretty (Zoltan Haindrich, reviewed by Ashutosh Chauhan)",4
+213,HBASE-14466 Remove duplicated code from MOB snapshot tests,2
+13,fix issue 1992 - ensure that our variable names don't match the names of the generated enums or we will get a compiler error.  Also fix the escaping of reserved words to use an underscore as the comment implies instead of the word Swagger.,1
+55,correct feature pack licenses.html title,4
+2933,#131 Package Structure Refactoring,3
+29,improved MATCHES operator performances storing the compiled pattern in a,5
+2939,#8 updated the package structure and improved the usage of constants,3
+18,Improved performance by avoiding unnecessary NumberFormatException,5
+88,small refactor to avoid duplicate code,2
+64,"The Maven ""feature"" goal has been renamed to ""cucumber"". The Maven property configuration.args (<configuration><args>...) has been removed. Use configuration.cucumberArgs instead.",4
+47,Remove duplicate code block,2
+219,Refactor some duplicated math methods,2
+12,Some modest improvements to use of JDBC -- better use of prepared statement and reuse of connections in some situations.,5
+183,"Refactor test code, remove duplicates at FailoverOperatorTest",2
+169,Remove duplicate/obsolete tests,2
+173,CommandLineRunner can now handle URIs again; refactored some duplicated code,2
+2,cloudStack 3.0 new UI - NaaS - fix a bug that dedicated parameter didnt' get to pass into API call.,1
+59,Improve readability of ComparisonFailure,5
+33,"host page - fix a bug ""clearAddButtonsOnTop is not defined"". This function is retired.",1
+46,Unify and encapsulate deployment flow methods and params,2
+227,"HBASE-1105  Remove duplicated code in HCM, add javadoc to RegionState, etc.",2
+27,bug 6745: Fix problems in Async create commands,1
+2950,- DocearEvent structure refactored,3
+10,Improve logging readability,5
+97,Add missing audit log feature,4
+41,bug 11202: cloudStack - Service Offering page - fix a bug that Network Rate didn't get refreshed when another service offering is selected.,1
+21,bug 9597: Fixed the recreatable problem.  Also added the 2.2.1 upgrade step,1
+226,"Fix for ISSUE 1111 (and 1112, which is a duplicate).  Corrected link paths for 'New Job' and 'People' in sidebar.",2
+4,Fixed adding route for additional public nic on fail over,1
+44,Tiny performance improvement.,5
+170,Remove duplicate code and dependency on metadata,2
+36,#691 - Performance Improvements,5
+2936,#204 refactored DB structure to deal with private and public autocompletion info,3
+253,No need to duplicate close method as it's already inherited from Closeable,2
