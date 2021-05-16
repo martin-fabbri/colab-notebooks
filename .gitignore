@@ -109,3 +109,8 @@ venv.bak/
 # install scripts
 install*
 
+images/
+
+saves_models/
+
+
